@@ -11,7 +11,22 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', 'username', 'email', 'is_staff')
 
 
-class CarSerializer(serializers.HyperlinkedModelSerializer):
+# class CarSerializer(serializers.HyperlinkedModelSerializer):
+
+#     class Meta:
+#         model = Car
+#         fields = ('url', 'id', 'photo', 'model', 'price', 'description', 'year', 'createdAt')
+
+
+class PhotoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CarImage
+        fields = ('id', 'car', 'image')
+
+
+class CarSerializer(serializers.ModelSerializer):
+    photo = PhotoSerializer(many=True, read_only=True)
+
     class Meta:
         model = Car
         fields = ('url', 'id', 'photo', 'model', 'price', 'description', 'year', 'createdAt')

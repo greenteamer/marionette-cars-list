@@ -6,14 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bootstrap 101 Template</title>
 
+    <link href="/static/css/style.css" rel="stylesheet">
     <!-- Bootstrap -->
     <link href="/static/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Alertify -->
+    <link href="/static/js/lib/alertify/themes/alertify.core.css" rel="stylesheet">
+    <link href="/static/js/lib/alertify/themes/alertify.bootstrap.css" rel="stylesheet">    
+
   </head>
   <body>
 
     <div class="container">
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 ">
 
           <nav class="navbar navbar-default">
             <div class="container-fluid">
@@ -31,29 +36,10 @@
               <!-- Collect the nav links, forms, and other content for toggling -->
               <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                  <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-                  <li><a href="#">Link</a></li>
-                  <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                      <li><a href="#">Action</a></li>
-                      <li><a href="#">Another action</a></li>
-                      <li><a href="#">Something else here</a></li>
-                      <li role="separator" class="divider"></li>
-                      <li><a href="#">Separated link</a></li>
-                      <li role="separator" class="divider"></li>
-                      <li><a href="#">One more separated link</a></li>
-                    </ul>
-                  </li>
-                </ul>
-                <form class="navbar-form navbar-left" role="search">
-                  <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search">
-                  </div>
-                  <button type="submit" class="btn btn-default">Submit</button>
-                </form>
+                  <li class="active"><a href="#">Главная <span class="sr-only">(current)</span></a></li>
+                  <li><a href="#car/create">Добавить Машинку</a></li>
+                </ul>                
                 <ul class="nav navbar-nav navbar-right">
-                  <li><a href="#">Link</a></li>
                   <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -69,26 +55,134 @@
             </div><!-- /.container-fluid -->
           </nav>
 
-          <h1>Hello, world!</h1>
+          <!-- <h1>Машинки</h1> -->
 
+          <!-- основной регион -->
           <div id="main-region">
             <p>Empty main region</p>
           </div>
-          
+          <!-- конец региона -->
+
+          <!-- композит для списка моделей -->
           <script type="text/template" id="car-template">
             <thead>
               <tr>
+                <th>Id</th>
+                <th>Фото</th>
                 <th>Модель</th>
                 <th>Цена</th>
+                <th></th>
+                <th></th>
               </tr>
             </thead>
             <tbody></tbody>
           </script> 
+          <!-- конец композита -->
 
+          <!-- список моделей -->
           <script type="text/template" id="car-list-template">
+            <td><%= id %></td>
+            <td>
+              <% _.each(photo, function(obj){ %>  
+                <image src="<%= obj.image %>" width='100'/>
+              <% }) %>
+            </td>
             <td><%= model %></td>
-            <td><%= price %></td>  
+            <td><%= price %></td>
+            <td><a href="#car/<%= id %>" id="car-show" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-eye-open"> показать </span></a></td>
+            <td><a href="#car/<%= id %>/edit" id="car-edit" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil"> редактировать </span></a></td>
+            <td><button id="car-delete" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-remove"></span> удалить </button></td>
           </script>
+          <!-- конец списка -->
+
+          <!-- страница одной модели -->
+          <script type="text/template" id="car-show-template">
+            <h1><%= model %></h1>
+            <td>
+              <% _.each(photo, function(obj){ %>  
+                <image src="<%= obj.image %>" width='100'/>
+              <% }) %>
+            </td>
+            <p>Год: <%= year %></p>
+            <p>Цена: <%= price %></p>            
+            <p><%= description %></p>
+            <td><a href="#car/<%= id %>/edit" id="car-edit" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil"> редактировать </span></a></td>
+            <td><button id="car-delete" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span> удалить </button></td>
+          </script>
+          <!-- конец -->
+
+
+          <!-- missing car -->
+          <script type="text/template" id="missing-car-template">
+            <h1>Sorry, we haven't car with such id</h1>
+          </script>
+          <!-- end missing car -->
+
+
+          <!-- loader -->
+          <script type="text/template" id="loading-template">
+            <div id="spinner"></div>
+          </script>
+          <!-- end loader -->
+
+          <!-- форма создания и редактирвания модели -->
+          <script type="text/template" id="car-form-template">
+            <div id="add-car-form">   
+              
+              <!-- image upload -->              
+              
+                <h4>изображения</h4>
+                <div class="table table-bordered">  
+                  <table class="photo_table">
+                    <tbody>
+                      <% _.each(photo, function(obj){ %>
+                        <tr>
+                          <td><label for="model">фото: </label></td>                        
+                          <td><image src="<%= obj.image %>" width="200"></td>
+                          <td><button class="btn btn-default btn-sm deletePhoto" id="<%= obj.id %>">удалить</button></td>
+                        </tr>
+                      <% }) %>
+                    </tbody>
+                  </table>                
+                </div>     
+
+{#                <form enctype="multipart/form-data" id="add-photo">#}
+{#                  <input type="file" class="" name="image" id="image"/>#}
+{#                  <td><button type="submit" class="btn btn-default btn-sm" id="<%= id %>">добавить</button></td>#}
+{#                </form>#}
+
+                <br>
+                <form enctype="multipart/form-data" id="edit-car-form">
+                    <div class="form-group">
+                      <label for="model">модель авто</label>
+                      <input type="text" class="form-control" name="model" id="model" placeholder="модель авто" value="<%= model %>">
+                    </div>
+                    <br>
+                    <div class="form-group">
+                      <label for="price">Цена</label>
+                      <input type="number" class="form-control" name="price" placeholder="Цена" id="price" value="<%= price %>">
+                    </div>
+                    <br>
+                    <div class="form-group">
+                      <label for="description">Описание</label>
+                      <textarea class="form-control" name="description" id="description" rows="3"><%= description %></textarea>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for="year">Год</label>
+                        <input class="form-control" type="date" id="year" value="<%= year %>">
+                    </div>
+                    <h4>Добавить фото:</h4>
+                    <div class="form-group">
+                        <input type="file" class="" name="image" id="image"/>
+                    </div>
+                    <br>
+                    <button type="submit" id="car-form" class="btn btn-primary btn-sm">Сохранить</button>
+                </form>
+
+            </div>
+          </script>
+          <!-- конец формы -->
 
         </div>
       </div>
