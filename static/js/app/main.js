@@ -1,107 +1,46 @@
-define(['jquery' ,'backbone', 'marionette', 'app', 'models/car'],
+define(
+    [
+        'jquery',
+        'backbone',
+        'marionette',    
+        'app',
+        'models/cars',
+        'models/photo',
+        'cars/list/cars_list',
+        'cars/list/cars_list_controller', 
+        'cars/show/car_show_view',
+        'cars/show/car_show_controller',
+        'cars/cars_app',
+        'cars/create/cars_create_view',
+        'cars/create/cars_create_controller',
+        'cars/edit/cars_edit_view',
+        'cars/edit/cars_edit_controller',
+        'common/views'        
+    ],
+
     function ($, Backbone, Marionette, App) {
 
-        App.Car = Backbone.Model.extend({});
+        App.navigate = function(route, options){
+            options || (options = {});
+            Backbone.history.navigate(route, options);
+        };
 
-        App.CarCollection = Backbone.Collection.extend({
-            model: App.Car,
-            comparator: function(car){
-                // можно просто передать поле например: 'model'
-                return car.get('model')
-            }
-        })
-
-        App.CarItemView = Marionette.ItemView.extend({
-            tagName: 'tr',
-            template: '#car-list-template'
-        });    
-
-        App.CarsView = Marionette.CompositeView.extend({
-            tagName                 : 'table',
-            className               : 'table',
-            template                : '#car-template',
-            childView               : App.CarItemView,
-            childViewContainer      : 'tbody'
-        });
+        App.getCurrentRoute = function(){
+            return Backbone.history.fragment;
+        };
 
         // Start history when our application is ready
         App.on('start', function() {
-            Backbone.history.start();
+            if (Backbone.history) {
+                Backbone.history.start();    
 
-
-            App.request('getAlert');
-
-            var cars  = new App.CarCollection([
-                {
-                    photo: [
-                        "media/98414_YizsPRk.jpg"
-                    ],
-                    model: "Toyota",                
-                    price: 100, 
-                    description: "description", 
-                    year: "2015-11-19",
-                    createdAt: "2015-11-19"
-                },
-                {
-                    photo: [
-                        "media/подушка.jpg"
-                    ],
-                    model: "Nissan Wuotar",                
-                    price: 200, 
-                    description: "description", 
-                    year: "2015-11-19",
-                    createdAt: "2015-11-19"
-                },
-                {
-                    photo: [
-                        "media/98414_YizsPRk.jpg"
-                    ],
-                    model: "Dooyota",                
-                    price: 100, 
-                    description: "description", 
-                    year: "2015-11-19",
-                    createdAt: "2015-11-19"
-                },
-                {
-                    photo: [
-                        "media/подушка.jpg"
-                    ],
-                    model: "Nissan Pulsar",                
-                    price: 200, 
-                    description: "description", 
-                    year: "2015-11-19",
-                    createdAt: "2015-11-19"
-                },
-                {
-                    photo: [
-                        "media/98414_YizsPRk.jpg"
-                    ],
-                    model: "Fasha Su",                
-                    price: 100, 
-                    description: "description", 
-                    year: "2015-11-19",
-                    createdAt: "2015-11-19"
-                },
-                {
-                    photo: [
-                        "media/подушка.jpg"
-                    ],
-                    model: "Grom pod Vami",                
-                    price: 200, 
-                    description: "description", 
-                    year: "2015-11-19",
-                    createdAt: "2015-11-19"
-                }
-            ]);
-
-            var carsView = new App.CarsView({
-                collection: cars
-            });
-
-            App.mainRegion.show(carsView);
+                if (this.getCurrentRoute() === '') {
+                    App.trigger('cars:list');
+                };
+            };
+                        
         });
 
         return App;
-
     }
 );
