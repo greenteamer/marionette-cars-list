@@ -7,8 +7,8 @@ define(['jquery', 'backbone', 'marionette', 'app'], function ($, Backbone, Mario
                 'car/pager/:number': 'pagerCars',
 				'car/create': 'createCar',
 				'car/:id/edit': 'editCar',
-				'car/:id': 'showCar'
-				
+				'car/:id': 'showCar',
+                'page/about': 'pageAbout'
 			}
 		});
 
@@ -26,8 +26,11 @@ define(['jquery', 'backbone', 'marionette', 'app'], function ($, Backbone, Mario
 			createCar: function () {
 				CarsApp.Create.Controller.createCar();
 			},
-			editCar: function (id) {
+            editCar: function (id) {
 				CarsApp.Edit.Controller.editCar(id);
+			},
+            pageAbout: function (id) {
+				PagesApp.About.Controller.showPage(slug);
 			}
 		};
 

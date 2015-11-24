@@ -2,7 +2,7 @@ define(['backbone', 'backbone_pag', 'marionette', 'promise', 'app'], function(Ba
 
 	App.module("Entities", function(Entities, App, Backbone, Marionette, $, _){
 		Entities.Car = Backbone.Model.extend({
-            urlRoot: 'api/v1/cars/'
+            urlRoot: 'api/v1/pages/'
         });
 
 	    Entities.CarCollection = Backbone.PageableCollection.extend({
@@ -43,7 +43,7 @@ define(['backbone', 'backbone_pag', 'marionette', 'promise', 'app'], function(Ba
 		var API = {
 			getCarEntities: function (number) {
                 console.log('API getCarEntities number: ', number);
-				var cars = new Entities.CarCollection();  
+				var cars = new Entities.CarCollection();
                 return new Promise(function(resolve){
 
                     if (!number) {
@@ -78,7 +78,7 @@ define(['backbone', 'backbone_pag', 'marionette', 'promise', 'app'], function(Ba
             uniqueModel: function(attrModel){
                 // функция проверки на уникальность атрибута model
                 // как всегда Promise выручает в асинхроне
-                // в данном случае мы возвращаем объект Promise для 
+                // в данном случае мы возвращаем объект Promise для
                 // конечного результата
                 // внутри него же мы ловим выполненое обещание от получения всех моделей коллекции
                 var self = this;
@@ -93,7 +93,7 @@ define(['backbone', 'backbone_pag', 'marionette', 'promise', 'app'], function(Ba
                     });
 
                 });
-                
+
             }
 		};
 
