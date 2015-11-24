@@ -11,7 +11,7 @@ define(['alertify', 'backbone', 'marionette', 'app'], function(Alertify, Backbon
 					price: 0,
 					description: '',
 					year: ''
-				}
+				};
 				var model = new App.Entities.Car(emptyObj);
 				// console.log('start createCar model: ', model);
 				var createCar = new Create.Car({
@@ -19,19 +19,36 @@ define(['alertify', 'backbone', 'marionette', 'app'], function(Alertify, Backbon
 				});
 				App.mainRegion.show(createCar);
 
-				createCar.on('cars:create', function(obj){
-					var model = new App.Entities.Car(obj);
+				createCar.on('cars:create', function(formData, modelName){
+					var model = new App.Entities.Car();
 
 					// проверка на уникальность (метод в модели)
-					var promise = App.request('car:isUnique', obj.model);
+					var promise = App.request('car:isUnique', modelName);
 					promise.then(function(isUnique){
 						if (isUnique) {
-							model.save({},{
-								success: function(){
-									Alertify.success('Модель успешно создана!');	
-									App.trigger('cars:list');
-								}
-							});
+
+							model.save(null, {
+                                data: formData,
+                                contentType: false,
+                                processData: false,
+                                success: function(data){
+                                    // после успешного сохранения модели сохраняем фото для нее
+
+                                    var photo = new App.Entities.Photo();
+                                    formData.append('car', data.id);
+                                    photo.save(null, {
+                                        data: formData,
+                                        contentType: false,
+                                        progressData: false,
+                                        success: function(data){
+
+                                            Alertify.success('Модель успешно создана!');
+                                            App.trigger('cars:list');
+                                        }
+                                    });
+                                }
+                            });
+
 						}else{
 							Alertify.alert('Модель с таким названием уже существует!');	
 							Alertify.error('Модель не создана!');

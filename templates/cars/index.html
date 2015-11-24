@@ -60,23 +60,40 @@
           <!-- основной регион -->
           <div id="main-region">
             <p>Empty main region</p>
+
           </div>
           <!-- конец региона -->
 
+
           <!-- композит для списка моделей -->
-          <script type="text/template" id="car-template">
-            <thead>
-              <tr>
-                <th>Id</th>
-                <th>Фото</th>
-                <th>Модель</th>
-                <th>Цена</th>
-                <th></th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </script> 
+            <script type="text/template" id="car-template">
+                <div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Фото</th>
+                                <th>Модель</th>
+                                <th>Цена</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <nav>
+                        <ul class="pagination">
+                            <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+                            <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">5</a></li>
+                            <li><a href="#" aria-label="Next" id="next"><span aria-hidden="true">»</span></a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </script>
           <!-- конец композита -->
 
           <!-- список моделей -->
@@ -98,16 +115,16 @@
           <!-- страница одной модели -->
           <script type="text/template" id="car-show-template">
             <h1><%= model %></h1>
-            <td>
+            <div>
               <% _.each(photo, function(obj){ %>  
                 <image src="<%= obj.image %>" width='100'/>
               <% }) %>
-            </td>
+            </div>
             <p>Год: <%= year %></p>
             <p>Цена: <%= price %></p>            
             <p><%= description %></p>
-            <td><a href="#car/<%= id %>/edit" id="car-edit" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil"> редактировать </span></a></td>
-            <td><button id="car-delete" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span> удалить </button></td>
+            <a href="#car/<%= id %>/edit" id="car-edit" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil"> редактировать </span></a>
+            <button id="car-delete" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span> удалить </button>
           </script>
           <!-- конец -->
 
@@ -131,20 +148,7 @@
               
               <!-- image upload -->              
               
-                <h4>изображения</h4>
-                <div class="table table-bordered">  
-                  <table class="photo_table">
-                    <tbody>
-                      <% _.each(photo, function(obj){ %>
-                        <tr>
-                          <td><label for="model">фото: </label></td>                        
-                          <td><image src="<%= obj.image %>" width="200"></td>
-                          <td><button class="btn btn-default btn-sm deletePhoto" id="<%= obj.id %>">удалить</button></td>
-                        </tr>
-                      <% }) %>
-                    </tbody>
-                  </table>                
-                </div>     
+
 
 {#                <form enctype="multipart/form-data" id="add-photo">#}
 {#                  <input type="file" class="" name="image" id="image"/>#}
@@ -178,7 +182,21 @@
                     </div>
                     <br>
                     <button type="submit" id="car-form" class="btn btn-primary btn-sm">Сохранить</button>
-                </form>
+                </form><h4>изображения</h4>
+
+                <div class="table table-bordered">
+                  <table class="photo_table">
+                    <tbody>
+                      <% _.each(photo, function(obj){ %>
+                        <tr>
+                          <td><label for="model">фото: </label></td>
+                          <td><image src="<%= obj.image %>" width="200"></td>
+                          <td><button class="btn btn-default btn-sm deletePhoto" id="<%= obj.id %>">удалить</button></td>
+                        </tr>
+                      <% }) %>
+                    </tbody>
+                  </table>
+                </div>
 
             </div>
           </script>

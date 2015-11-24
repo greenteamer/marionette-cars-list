@@ -9,10 +9,13 @@ requirejs.config({
 	    underscore      : '/static/js/lib/underscore/underscore', 
 	    backbone        : '/static/js/lib/backbone/backbone',
 		backbone_mfu	: '/static/js/lib/backbone_mfu/backbone-model-file-upload',
+		backbone_pag	: '/static/js/lib/backbone.paginator/lib/backbone.paginator.min',
+        backgrid        : '/static/js/lib/backgrid/lib/backgrid.min',
 	    syphon    	    : '/static/js/lib/backbone.syphon/lib/backbone.syphon',
 	    marionette      : '/static/js/lib/backbone.marionette/lib/backbone.marionette',
 	    cookies			: '/static/js/lib/js-cookie/src/js.cookie',
-	    promise			: 'https://www.promisejs.org/polyfills/promise-6.1.0',
+	    //promise			: 'https://www.promisejs.org/polyfills/promise-6.1.0',
+        promise			: '/static/js/lib/promise',
 	    spin 			: '/static/js/lib/spin/spin',
 	    alertify		: '/static/js/lib/alertify/lib/alertify.min'
 	}, 
@@ -32,6 +35,14 @@ requirejs.config({
 			deps		: ['jquery', 'underscore', 'backbone'],
 			exports		: 'BackboneMfu'
 		},
+		backbone_pag: {
+	        deps        : ['backbone'],
+	        exports     : 'BackbonePag'
+	    },
+        backgrid: {
+            deps        : ['jquery', 'underscore', 'backbone'],
+            exports     : 'Backgrid'
+        },
 	    syphon: {
 	    	deps		: ['backbone'],
 	    	exports		: 'Syphon'

@@ -1,4 +1,4 @@
-define(['backbone', 'marionette', 'promise', 'app'], function(Backbone, Marionette, Promise, App){
+define(['backbone', 'backbone_pag', 'marionette', 'promise', 'app'], function(Backbone, BackbonePag, Marionette, Promise, App){
 
 	console.log(App);
 
@@ -7,9 +7,13 @@ define(['backbone', 'marionette', 'promise', 'app'], function(Backbone, Marionet
             urlRoot: 'api/v1/cars/'
         });
 
-	    Entities.CarCollection = Backbone.Collection.extend({
+	    Entities.CarCollection = Backbone.PageableCollection.extend({
             url: 'api/v1/cars/',
 	        model: Entities.Car,
+            state: {
+                pageSize: 5
+            },
+            mode: "client",
                 
 	        comparator: function(car){
 	            // можно просто передать поле например: 'model'
@@ -41,9 +45,38 @@ define(['backbone', 'marionette', 'promise', 'app'], function(Backbone, Marionet
 			getCarEntities: function () {
 				var cars = new Entities.CarCollection();  
                 return new Promise(function(resolve){              
-                    cars.fetch({
+                    cars.getFirstPage({
+                        fetch: true,
                         success: function(data){
-                            resolve(data);      
+                            resolve(data);
+                        },
+                        error: function () {
+                            resolve(undefined);
+                        }
+                    });
+                });
+			},
+            getNextCarPage: function () {
+				var cars = new Entities.CarCollection();
+                return new Promise(function(resolve){
+                    cars.getNextPage({
+                        fetch: true,
+                        success: function(data){
+                            resolve(data);
+                        },
+                        error: function () {
+                            resolve(undefined);
+                        }
+                    });
+                });
+			},
+            getPreviousCarPage: function () {
+				var cars = new Entities.CarCollection();
+                return new Promise(function(resolve){
+                    cars.getPreviousPage({
+                        fetch: true,
+                        success: function(data){
+                            resolve(data);
                         },
                         error: function () {
                             resolve(undefined);
@@ -92,6 +125,14 @@ define(['backbone', 'marionette', 'promise', 'app'], function(Backbone, Marionet
 
         App.reqres.setHandler('cars:entity', function(id){
             return API.getCarEntity(id);
+        });
+
+        App.reqres.setHandler('cars:nextPage', function(){
+            return API.getNextCarPage();
+        });
+
+        App.reqres.setHandler('cars:previousPage', function(){
+            return API.getPreviousCarPage();
         });
 
         App.reqres.setHandler('car:isUnique', function(attrModel){

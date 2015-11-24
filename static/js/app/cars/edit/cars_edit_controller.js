@@ -17,6 +17,8 @@ define(['alertify', 'backbone', 'marionette', 'app'], function(Alertify, Backbon
 						// регистрируем функцию которая обновляет данные модели
 						editCar.on('cars:edit', function(data){							
 							var tmp_data = _.omit(data, 'image');
+							console.log('tmp_data: ', tmp_data);
+
 							car.set(tmp_data);
 							car.save({},{
 								success: function(){
@@ -50,20 +52,15 @@ define(['alertify', 'backbone', 'marionette', 'app'], function(Alertify, Backbon
 
 						// регистрируем функцию которая добавления фото
 						editCar.on('photo:add', function(data){
-							$.ajax({
-								url: "/api/v1/photo/",
-								method: "POST",
+							var photo = new App.Entities.Photo();
+							photo.save(null, {
 								data: data,
+								contentType: false,
+								progressData: false,
 								success: function(data){
 									Alertify.success('Изображение добавлено успешно!');
-								},
-								error: function(data){},
-								processData: false,
-								contentType: false
+								}
 							});
-							//var photo = new App.Entities.Photo({});
-                            //
-							//photo.save(obj);
 
 						});
 

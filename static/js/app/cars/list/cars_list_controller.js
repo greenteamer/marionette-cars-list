@@ -12,7 +12,8 @@ define(['alertify', 'backbone', 'marionette', 'app'], function (Alertify, Backbo
                 var promise = App.request('cars:entities');
 
                 promise.then(function(cars){
-                
+                    console.log('currentPage: ', cars.state.currentPage);
+
                     var carsView = new List.Cars({
                         collection: cars
                     });
@@ -31,7 +32,20 @@ define(['alertify', 'backbone', 'marionette', 'app'], function (Alertify, Backbo
 
                     carsView.on('childview:car:show', function (childview, model) {
                         App.trigger('car:show', model.get('id'));
-                    })
+                    });
+
+                    //carsView.on('cars:next', function () {
+                    //    console.log('next cars request');
+                    //    var nextPromise = App.request('cars:nextPage');
+                    //    nextPromise.then(function(nextCars){
+                    //        carsView = new List.Cars({
+                    //            collection: nextCars
+                    //        });
+                    //        console.log(nextCars.state.currentPage);
+                    //    });
+                    //
+                    //});
+
 
                     App.mainRegion.show(carsView);
                 });

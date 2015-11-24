@@ -27,7 +27,9 @@ define(['backbone', 'marionette', 'app'], function(Backbone, Marionette, App) {
             showCar: function (e) {
                 e.preventDefault();
                 this.trigger('car:show', this.model);
-            }
+            },
+
+
 
             // onDestroy: function(){
             //     var self = this;
@@ -39,12 +41,29 @@ define(['backbone', 'marionette', 'app'], function(Backbone, Marionette, App) {
         });
 
         List.Cars = Marionette.CompositeView.extend({
-            tagName                 : 'table',
+            tagName                 : 'div',
             className               : 'table',
             template                : '#car-template',
             childView               : List.Car,
-            childViewContainer      : 'tbody'
+            childViewContainer      : 'tbody',
+
+            initialize: function(){
+                var tags = this.collection;
+                tags.on('next', this.next, this);
+                console.log('tags.pager(): ', tags.pager());
+            },
+
+            events: {
+                'click a#next': 'next'
+            },
+
+            next: function(e){
+                e.preventDefault();
+                console.log('next start');
+                this.trigger('cars:next');
+            }
         });
+
 
 	});
 

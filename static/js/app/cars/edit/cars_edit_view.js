@@ -14,7 +14,23 @@ define(['backbone', 'syphon', 'cookies', 'marionette', 'app'],
                 editCar: function(e){
                     e.preventDefault();
                     var data = Backbone.Syphon.serialize(this);
-                    this.trigger('cars:edit', data);
+                    data.year = $('#year').val();
+                    console.log('data: ', data);
+
+                    if ($('#image').val() !== '') {
+                        // проверка добавлялось ли новое фото
+                        console.log('photo brunch');
+
+                        data.formdata = new FormData($('form#edit-car-form').get(0));
+                        data.formdata.append('car', this.model.attributes.id);
+
+                        this.trigger('photo:add', data.formdata);
+                        this.trigger('cars:edit', data);
+                    }else{
+                        console.log('without photo brunch, data: ', data);
+                        this.trigger('cars:edit', data);
+                    }
+
                 },
 
                 deletePhoto: function (e) {
@@ -25,13 +41,15 @@ define(['backbone', 'syphon', 'cookies', 'marionette', 'app'],
                 },
 
                 addPhoto: function (e) {
-                    e.preventDefault();
+                    //e.preventDefault();
 
-                    var data = new FormData($('form#add-photo').get(0));
-                    var csrftoken = Cookies.get('csrftoken');
-                    data.append('car', this.model.attributes.id);
-                    data.append('csrfmiddlewaretoken', csrftoken);
-                    this.trigger('photo:add', data);
+
+                    //var data = new FormData($('form#add-photo').get(0));
+                    //var csrftoken = Cookies.get('csrftoken');
+                    //data.append('car', this.model.attributes.id);
+                    //data.append('csrfmiddlewaretoken', csrftoken);
+                    //this.trigger('photo:add', data);
+
 
                     //console.log('first data: ', data);
                     //var files  = e.target.files;
