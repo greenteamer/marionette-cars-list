@@ -16,6 +16,7 @@ atlassian-ide-plugin.xml
 .ropeproject/*
 
 # Project
+db.sqlite3
 settings_local.py
 notes.py
 logs/
