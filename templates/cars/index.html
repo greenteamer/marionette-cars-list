@@ -68,6 +68,12 @@
           <!-- композит для списка моделей -->
             <script type="text/template" id="car-template">
                 <div>
+                    <label for="">сортировать по: </label>
+                    <select name="sorting" id="sorting">
+                        <option value="model">модели</option>
+                        <option value="price">Цене:</option>
+                        <option value="id">id</option>
+                    </select>
                     <table class="table">
                         <thead>
                             <tr>
@@ -83,12 +89,10 @@
                     </table>
                     <nav>
                         <ul class="pagination">
-                            <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
-                            <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
+                            <li><a href="#" aria-label="Previous" id="previous"><span aria-hidden="true">«</span></a></li>
+                            <% _.each(_.range(pages), function(page){ %>
+                                <li><a href="#car/pager/<%= page+1 %>"><%= page+1 %></a></li>
+                            <% }) %>
                             <li><a href="#" aria-label="Next" id="next"><span aria-hidden="true">»</span></a></li>
                         </ul>
                     </nav>

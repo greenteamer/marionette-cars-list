@@ -14,7 +14,6 @@ requirejs.config({
 	    syphon    	    : '/static/js/lib/backbone.syphon/lib/backbone.syphon',
 	    marionette      : '/static/js/lib/backbone.marionette/lib/backbone.marionette',
 	    cookies			: '/static/js/lib/js-cookie/src/js.cookie',
-	    //promise			: 'https://www.promisejs.org/polyfills/promise-6.1.0',
         promise			: '/static/js/lib/promise',
 	    spin 			: '/static/js/lib/spin/spin',
 	    alertify		: '/static/js/lib/alertify/lib/alertify.min'

@@ -4,6 +4,7 @@ define(['jquery', 'backbone', 'marionette', 'app'], function ($, Backbone, Mario
 		CarsApp.Router = Marionette.AppRouter.extend({
 			appRoutes: {
 				'': 'listCars',
+                'car/pager/:number': 'pagerCars',
 				'car/create': 'createCar',
 				'car/:id/edit': 'editCar',
 				'car/:id': 'showCar'
@@ -14,6 +15,10 @@ define(['jquery', 'backbone', 'marionette', 'app'], function ($, Backbone, Mario
 		var API = {
 			listCars: function(){
 				CarsApp.List.Controller.listCars();
+			},
+            pagerCars: function(number){
+				console.log('test pageNumber: ', number);
+				CarsApp.List.Controller.listCars(number);
 			},
 			showCar: function (id) {
 				CarsApp.Show.Controller.showCar(id);
