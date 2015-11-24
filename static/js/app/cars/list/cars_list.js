@@ -47,21 +47,30 @@ define(['backbone', 'marionette', 'app'], function(Backbone, Marionette, App) {
             childView               : List.Car,
             childViewContainer      : 'tbody',
 
-            initialize: function(){
-                var tags = this.collection;
-                tags.on('next', this.next, this);
-                console.log('tags.pager(): ', tags.pager());
+            sort: function(){
+                console.log('sort method in view');
+                self.render();
             },
 
             events: {
-                'click a#next': 'next'
+                'change #sorting': 'sorting',
+                'click #next': 'next',
+                'click #previous': 'previous'
             },
 
+            sorting: function(e){
+                e.preventDefault();
+                this.trigger('cars:sorting', e.target.value);
+            },
             next: function(e){
                 e.preventDefault();
-                console.log('next start');
                 this.trigger('cars:next');
+            },
+            previous: function(e){
+                e.preventDefault();
+                this.trigger('cars:previous');
             }
+
         });
 
 

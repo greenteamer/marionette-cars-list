@@ -3,19 +3,25 @@ define(['alertify', 'backbone', 'marionette', 'app'], function (Alertify, Backbo
 
         List.Controller = {            
 
-            listCars: function(){
+            listCars: function(number){
+
+                console.log('test number in controller: ', number);
 
                 var loadingView = new App.Common.Views.Loading();
-                App.mainRegion.show(loadingView);   
+                App.mainRegion.show(loadingView);
 
-                // var cars = App.request('cars:entities');
-                var promise = App.request('cars:entities');
-
+                var promise = App.request('cars:entities', number);
                 promise.then(function(cars){
                     console.log('currentPage: ', cars.state.currentPage);
-
+                    console.log('Page count: ', cars.state.totalPages);
                     var carsView = new List.Cars({
-                        collection: cars
+                        collection: cars,
+
+                        templateHelpers: function() {
+                            // передаем колличество страниц в шаблон
+                            return { pages: cars.state.totalPages };
+                        }
+
                     });
 
                     carsView.on('childview:car:delete', function (childview, model){
@@ -34,18 +40,23 @@ define(['alertify', 'backbone', 'marionette', 'app'], function (Alertify, Backbo
                         App.trigger('car:show', model.get('id'));
                     });
 
-                    //carsView.on('cars:next', function () {
-                    //    console.log('next cars request');
-                    //    var nextPromise = App.request('cars:nextPage');
-                    //    nextPromise.then(function(nextCars){
-                    //        carsView = new List.Cars({
-                    //            collection: nextCars
-                    //        });
-                    //        console.log(nextCars.state.currentPage);
-                    //    });
-                    //
-                    //});
+                    carsView.on('cars:sorting', function(field){
+                        console.log('sorting');
+                        //cars.getPage(cars.state.currentPage);
+                        // Assign new comparator
+                        this.collection.comparator = function(model) {
+                          return model.get(field);
+                        };
+                        this.collection.sort();
+                    });
 
+                    carsView.on('cars:next', function(){
+                        cars.getNextPage();
+                    });
+
+                    carsView.on('cars:previous', function(){
+                        cars.getPreviousPage();
+                    });
 
                     App.mainRegion.show(carsView);
                 });

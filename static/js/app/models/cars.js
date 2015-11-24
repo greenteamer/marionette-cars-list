@@ -11,13 +11,14 @@ define(['backbone', 'backbone_pag', 'marionette', 'promise', 'app'], function(Ba
             url: 'api/v1/cars/',
 	        model: Entities.Car,
             state: {
-                pageSize: 5
+                pageSize: 5,
+                firstPage: 1
             },
             mode: "client",
-                
+
 	        comparator: function(car){
 	            // можно просто передать поле например: 'model'
-	            return car.get('model')
+	            return car.get('model');
 	        }
 	    });
 
@@ -30,9 +31,9 @@ define(['backbone', 'backbone_pag', 'marionette', 'promise', 'app'], function(Ba
                     photo: [
                         "media/98414_YizsPRk.jpg"
                     ],
-                    model: "Toyota",                
-                    price: 100, 
-                    description: "description", 
+                    model: "Toyota",
+                    price: 100,
+                    description: "description",
                     year: "2015-11-19",
                     createdAt: "2015-11-19"
                 }
@@ -42,24 +43,15 @@ define(['backbone', 'backbone_pag', 'marionette', 'promise', 'app'], function(Ba
 	    };
 
 		var API = {
-			getCarEntities: function () {
+			getCarEntities: function (number) {
+                console.log('API getCarEntities number: ', number);
 				var cars = new Entities.CarCollection();  
-                return new Promise(function(resolve){              
-                    cars.getFirstPage({
-                        fetch: true,
-                        success: function(data){
-                            resolve(data);
-                        },
-                        error: function () {
-                            resolve(undefined);
-                        }
-                    });
-                });
-			},
-            getNextCarPage: function () {
-				var cars = new Entities.CarCollection();
                 return new Promise(function(resolve){
-                    cars.getNextPage({
+
+                    if (!number) {
+                        number = 1;
+                    }
+                    cars.getPage(parseInt(number), {
                         fetch: true,
                         success: function(data){
                             resolve(data);
@@ -68,22 +60,10 @@ define(['backbone', 'backbone_pag', 'marionette', 'promise', 'app'], function(Ba
                             resolve(undefined);
                         }
                     });
+                    //cars.setSorting('price');
                 });
 			},
-            getPreviousCarPage: function () {
-				var cars = new Entities.CarCollection();
-                return new Promise(function(resolve){
-                    cars.getPreviousPage({
-                        fetch: true,
-                        success: function(data){
-                            resolve(data);
-                        },
-                        error: function () {
-                            resolve(undefined);
-                        }
-                    });
-                });
-			},
+
             getCarEntity: function (carId) {
                 var car = new Entities.Car({id: carId});
                 return new Promise(function(resolve){
@@ -119,21 +99,15 @@ define(['backbone', 'backbone_pag', 'marionette', 'promise', 'app'], function(Ba
             }
 		};
 
-        App.reqres.setHandler('cars:entities', function () {
-            return API.getCarEntities();
+        App.reqres.setHandler('cars:entities', function (number) {
+            console.log('API getCarEntitiesApp.reqres.setHandler cars:entities number: ', number);
+            return API.getCarEntities(number);
         });
 
         App.reqres.setHandler('cars:entity', function(id){
             return API.getCarEntity(id);
         });
 
-        App.reqres.setHandler('cars:nextPage', function(){
-            return API.getNextCarPage();
-        });
-
-        App.reqres.setHandler('cars:previousPage', function(){
-            return API.getPreviousCarPage();
-        });
 
         App.reqres.setHandler('car:isUnique', function(attrModel){
             return API.uniqueModel(attrModel);
