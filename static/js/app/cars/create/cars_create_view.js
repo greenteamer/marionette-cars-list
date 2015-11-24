@@ -5,7 +5,7 @@ define(['alertify', 'jquery', 'backbone', 'marionette', 'app'], function (Alerti
 			template: '#car-form-template',
 
 			events: {
-				'click button#car-form': 'createCar'
+				'submit form#edit-car-form': 'createCar'
 			},
 
 			createCar: function (e) {
@@ -16,7 +16,12 @@ define(['alertify', 'jquery', 'backbone', 'marionette', 'app'], function (Alerti
 					description: $('#description').val(),
 					year: $('#year').val()
 				};
-				this.trigger('cars:create', obj);
+				var data = new FormData($('form#edit-car-form').get(0));
+                data.append('year', $('#year').val());
+
+                var modelName = $('#model').val();
+
+				this.trigger('cars:create', data, modelName);
 			}
 		});
 

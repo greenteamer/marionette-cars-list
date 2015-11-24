@@ -12,6 +12,7 @@
   "dependencies": {
     "backbone": "^1.2.3",
     "backbone.marionette": "^2.4.3",
+    "backbone.paginator": "^2.0.2",
     "backbone.syphon": "^0.6.3",
     "baconjs": "^0.7.82",
     "bootstrap": "^3.3.5",
