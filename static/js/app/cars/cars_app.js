@@ -7,12 +7,12 @@ define(['jquery', 'backbone', 'marionette', 'app'], function ($, Backbone, Mario
                 'car/pager/:number': 'pagerCars',
 				'car/create': 'createCar',
 				'car/:id/edit': 'editCar',
-				'car/:id': 'showCar',
-                'page/about': 'pageAbout'
+				'car/:id': 'showCar'
 			}
 		});
 
 		var API = {
+            // Cars API
 			listCars: function(){
 				CarsApp.List.Controller.listCars();
 			},
@@ -28,12 +28,10 @@ define(['jquery', 'backbone', 'marionette', 'app'], function ($, Backbone, Mario
 			},
             editCar: function (id) {
 				CarsApp.Edit.Controller.editCar(id);
-			},
-            pageAbout: function (id) {
-				PagesApp.About.Controller.showPage(slug);
 			}
 		};
 
+        //cars
 		App.on('cars:list', function(){
 			App.navigate('');
 			API.listCars();
@@ -54,6 +52,7 @@ define(['jquery', 'backbone', 'marionette', 'app'], function ($, Backbone, Mario
 			API.editCar();
 		});
 
+        //common
 		App.on('before:start', function () {
 			new CarsApp.Router({
 				controller: API

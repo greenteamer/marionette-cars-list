@@ -6,12 +6,16 @@ from rest_framework import routers
 from cars.serializers import *
 from cars.views import *
 
+from pages.serializers import *
+from pages.views import *
+
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'cars', CarViewSet)
 router.register(r'photo', PhotoViewSet)
+router.register(r'pages', PageViewSet)
 
 
 urlpatterns = patterns('',

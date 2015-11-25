@@ -4,8 +4,12 @@ define(
         'backbone',
         'marionette',    
         'app',
+
+        // models
         'models/cars',
         'models/photo',
+        'models/pages',
+
         'cars/list/cars_list',
         'cars/list/cars_list_controller', 
         'cars/show/car_show_view',
@@ -15,6 +19,13 @@ define(
         'cars/create/cars_create_controller',
         'cars/edit/cars_edit_view',
         'cars/edit/cars_edit_controller',
+
+        'pages/pages_app',
+        'pages/show/page_show_view',
+        'pages/show/page_show_controller',
+        'pages/edit/page_edit_view',
+        'pages/edit/page_edit_controller',
+
         'common/views'        
     ],
 

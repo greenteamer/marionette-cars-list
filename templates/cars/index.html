@@ -36,8 +36,9 @@
               <!-- Collect the nav links, forms, and other content for toggling -->
               <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                  <li class="active"><a href="#">Главная <span class="sr-only">(current)</span></a></li>
-                  <li><a href="#car/create">Добавить Машинку</a></li>
+                    <li class="active"><a href="#">Главная <span class="sr-only">(current)</span></a></li>
+                    <li><a href="#car/create">Добавить Машинку</a></li>
+                    <li><a href="#page/1">О нас</a></li>
                 </ul>                
                 <ul class="nav navbar-nav navbar-right">
                   <li class="dropdown">
@@ -148,17 +149,7 @@
 
           <!-- форма создания и редактирвания модели -->
           <script type="text/template" id="car-form-template">
-            <div id="add-car-form">   
-              
-              <!-- image upload -->              
-              
-
-
-{#                <form enctype="multipart/form-data" id="add-photo">#}
-{#                  <input type="file" class="" name="image" id="image"/>#}
-{#                  <td><button type="submit" class="btn btn-default btn-sm" id="<%= id %>">добавить</button></td>#}
-{#                </form>#}
-
+            <div id="add-car-form">
                 <br>
                 <form enctype="multipart/form-data" id="edit-car-form">
                     <div class="form-group">
@@ -202,6 +193,42 @@
                   </table>
                 </div>
 
+            </div>
+          </script>
+          <!-- конец формы -->
+
+
+            <!-- отображение одной информационной страницы -->
+          <script type="text/template" id="page-show-template">
+            <h1><%= title %></h1>
+            <p>Описание: <%= description %></p>
+            <a href="#page/<%= id %>/edit" id="page-edit" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil"> редактировать </span></a>
+          </script>
+          <!-- конец -->
+
+
+            <!-- форма создания и редактирвания модели -->
+          <script type="text/template" id="page-form-template">
+            <div id="add-page-form">
+                <br>
+                <form enctype="multipart/form-data" id="edit-car-form">
+                    <div class="form-group">
+                      <label for="title">Заголовок</label>
+                      <input type="text" class="form-control" name="title" id="title" placeholder="Заголовок" value="<%= title %>">
+                    </div>
+                    <br>
+                    <div class="form-group">
+                      <label for="slug">Slug</label>
+                      <input type="text" class="form-control" name="slug" id="slug" value="<%= slug %>">
+                    </div>
+                    <br>
+                    <div class="form-group">
+                      <label for="description">Описание</label>
+                      <textarea class="form-control" name="description" id="description" rows="3"><%= description %></textarea>
+                    </div>
+
+                    <button type="submit" id="car-form" class="btn btn-primary btn-sm">Сохранить</button>
+                </form>
             </div>
           </script>
           <!-- конец формы -->
